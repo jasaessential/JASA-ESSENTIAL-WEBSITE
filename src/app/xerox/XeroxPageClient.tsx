@@ -530,7 +530,7 @@ export default function XeroxPageClient() {
     result.finalPrice = singleCopyPrice * doc.quantity;
 
     return result;
-}, [allOptions.bindingTypes, allOptions.laminationTypes]);
+}, [allOptions.bindingTypes, allOptions.laminationTypes, paperTypes]);
 
   const documentPrices = useMemo(() => {
     return documents.map(doc => calculateDocumentPrice(doc));
@@ -951,6 +951,7 @@ export default function XeroxPageClient() {
 
   return (
     <div className="pb-24">
+      {isProcessing && <UploadProgressDialog />}
       <div className="container mx-auto px-4 py-8 text-center">
         <h1 className="font-headline text-3xl font-bold tracking-tight lg:text-4xl">
           Xerox &amp; Printing Services

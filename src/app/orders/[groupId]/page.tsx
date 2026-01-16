@@ -1,6 +1,8 @@
 
 "use client";
 
+export const runtime = 'edge';
+
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-provider";
@@ -166,11 +168,6 @@ export default function OrderGroupDetailPage() {
             pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
             const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
             return pdf.numPages;
-        } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-            const mammoth = (await import('mammoth')).default;
-            const result = await mammoth.extractRawText({ arrayBuffer });
-            const wordCount = result.value.split(/\s+/).filter(Boolean).length;
-            return Math.ceil(wordCount / 250);
         }
          return 1;
     } catch (error) {

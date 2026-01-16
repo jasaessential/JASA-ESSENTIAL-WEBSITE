@@ -7,7 +7,7 @@ import { FolderKanban, Store } from "lucide-react";
 import Link from "next/link";
 import SellerDashboardClient from "./SellerDashboardClient";
 
-export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 async function getShopData() {
     try {

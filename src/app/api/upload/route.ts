@@ -1,10 +1,8 @@
 
+export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from "next/server";
 import { getDriveClient } from "@/lib/googleDrive";
-import fs from "fs";
-import path from "path";
-import os from "os";
-import { Readable } from "stream";
 
 export async function POST(req: NextRequest) {
     const formData = await req.formData();
@@ -14,27 +12,14 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    const tempFilePath = path.join(os.tmpdir(), file.name);
-
     try {
-        // Stream the file to a temporary location to avoid loading it all into memory
-        const readableStream = file.stream();
-        const writeStream = fs.createWriteStream(tempFilePath);
-        
-        // Use a promise to wait for the stream to finish writing
-        await new Promise((resolve, reject) => {
-            Readable.fromWeb(readableStream as any).pipe(writeStream)
-                .on('finish', resolve)
-                .on('error', reject);
-        });
-
         const drive = getDriveClient();
         
         const fileMetadata: any = { name: file.name };
 
         const media = {
             mimeType: file.type,
-            body: fs.createReadStream(tempFilePath),
+            body: file.stream() as any, // Pass the stream directly
         };
 
         const uploadResponse = await drive.files.create({
@@ -69,14 +54,5 @@ export async function POST(req: NextRequest) {
     } catch (e: any) {
         console.error('Error in POST /api/upload:', e);
         return NextResponse.json({ error: "Upload failed", details: e.message }, { status: 500 });
-    } finally {
-        // Clean up the temporary file
-        try {
-            if (fs.existsSync(tempFilePath)) {
-                await fs.promises.unlink(tempFilePath);
-            }
-        } catch (unlinkError) {
-            console.error("Failed to delete temporary file:", tempFilePath, unlinkError);
-        }
     }
 }

@@ -3,7 +3,7 @@ import { getProducts, getBrands, getProductTypes } from "@/lib/data";
 import type { Product, Brand, ProductType } from "@/lib/types";
 import ProductGrid from "@/components/product-grid";
 
-export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default async function ElectronicsPage() {
   let products: Product[] = [];

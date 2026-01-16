@@ -1,4 +1,6 @@
 
+export const runtime = 'edge';
+
 import { getShops } from "@/lib/shops";
 import type { Shop } from "@/lib/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -6,8 +8,6 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Store } from "lucide-react";
 import Link from "next/link";
 import AdminDashboardClient from "./AdminDashboardClient";
-
-export const dynamic = 'force-dynamic';
 
 async function getShopData() {
     try {
