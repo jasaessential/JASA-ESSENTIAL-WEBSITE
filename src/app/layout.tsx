@@ -23,7 +23,6 @@ const ptSans = PT_Sans({
 export const metadata: Metadata = {
     title: "Jasa Essentials",
     description: "Your one-stop shop for all essentials.",
-    manifest: "/manifest.json",
 };
 
 export default function RootLayout({
