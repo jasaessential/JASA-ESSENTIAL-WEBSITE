@@ -1,6 +1,7 @@
-/** @type {import('next').NextConfig} */
 
-const withPWA = require("next-pwa")({
+import withPWA from "@ducanh2912/next-pwa";
+
+const pwaConfig = {
   dest: "public",
   register: true,
   skipWaiting: true,
@@ -25,7 +26,7 @@ const withPWA = require("next-pwa")({
       },
     },
     {
-      urlPattern: ({ request }) => request.destination === 'document',
+      urlPattern: ({ request }: { request: Request }) => request.destination === 'document',
       handler: 'NetworkFirst',
       options: {
         cacheName: 'pages',
@@ -37,8 +38,9 @@ const withPWA = require("next-pwa")({
       }
     }
   ],
-});
+};
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
   devIndicators: {
@@ -99,4 +101,6 @@ const nextConfig = {
   },
 };
 
-module.exports = withPWA(nextConfig);
+const pwaWithNextConfig = withPWA(pwaConfig);
+
+export default pwaWithNextConfig(nextConfig);
